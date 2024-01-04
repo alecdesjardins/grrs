@@ -1,18 +1,16 @@
 use std::io;
 
 pub fn find_matches(content: &str, patterns: &[String], ignore_case: bool, mut writer: impl io::Write) -> io::Result<()> {
-    for line in content.lines() {
-        for pattern in patterns {
-            let pattern_match = if ignore_case {
-                line.to_lowercase().contains(&pattern.to_lowercase())
-            } else {
-                line.contains(pattern)
-            };
+    for pattern in patterns {
+        let pattern_match = if ignore_case {
+            content.to_lowercase().contains(&pattern.to_lowercase())
+        } else {
+            content.contains(pattern)
+        };
 
-            if pattern_match {
-                writeln!(writer, "{}", line)?;
-                break;
-            }
+        if pattern_match {
+            writeln!(writer, "{}", content)?;
+            break;
         }
     }
     Ok(())
@@ -24,7 +22,7 @@ mod tests {
 
     #[test]
     fn finds_a_match_ignore_case() -> io::Result<()> {
-        let content = "lorem ipsum\ndolor sit amet";
+        let content = "lorem ipsum";
         let patterns = ["IPSUM".to_string()];
         let ignore_case = true;
 
@@ -50,7 +48,7 @@ mod tests {
 
     #[test]
     fn finds_match_case_sensitive() -> io::Result<()> {
-        let content = "lorem ipsum\ndolor sit amet";
+        let content = "lorem ipsum";
         let patterns = ["ipsum".to_string()];
         let ignore_case = false;
 

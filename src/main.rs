@@ -1,6 +1,10 @@
+use std::fs::File;
 use clap::Parser;
 use std::io;
+use std::io::BufRead;
+use std::path::Path;
 use anyhow::{Context, Result};
+use grrs::find_matches;
 
 /// Search for a pattern in a file and display the lines that contain it.
 #[derive(Parser, Debug)]
@@ -20,11 +24,21 @@ struct Args {
 fn main() -> Result<()> {
     let args = Args::parse();
 
-    let content = std::fs::read_to_string(&args.path)
-        .with_context(|| format!("could not read file `{}`", args.path.display()))?;
+    let lines = read_lines(&args.path)
+        .with_context(|| format!("Failed to read lines from `{}`", args.path.display()))?;
 
-    grrs::find_matches(&content, &args.patterns, args.ignore_case, &mut io::stdout())
-        .with_context(|| format!("could not search for pattern `{:?}` in file `{}`", args.patterns, args.path.display()))?; // ? is a shortcut for try! macro
-
+    for line_result in lines {
+        let line = line_result
+            .with_context(|| format!("Failed to read a line from `{}`", args.path.display()))?;
+        find_matches(&line, &args.patterns, args.ignore_case, &mut io::stdout())
+            .with_context(|| format!("Could not search for pattern `{:?}` in file `{}`", args.patterns, args.path.display()))?;
+    }
     Ok(())
+}
+
+fn read_lines<P>(filename: P) -> Result<io::Lines<io::BufReader<File>>>
+    where P: AsRef<Path>, {
+    let path = filename.as_ref().to_owned(); // Clone the path
+    let file = File::open(&path).with_context(|| format!("could not read file `{}`", &path.display()))?;
+    Ok(io::BufReader::new(file).lines())
 }
