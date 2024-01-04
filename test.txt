@@ -1,4 +1,4 @@
-foo
-foobar
-bar
-barfoo
+ERROR: this is an error
+DEBUG: this is a debug message
+WARNING: this is a warning
+INFO: this is an info message

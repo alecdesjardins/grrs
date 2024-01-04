@@ -16,3 +16,11 @@ USAGE:
 $ grrs -p foo test.txt
 $ grrs --pattern foo test.txt
 ```
+
+## Testing
+The tool can be tested by running the following command:
+```bash
+$ cargo test
+```
+
+It will run all integrations tests in the `tests` directory and unit tests found in the `src` directory.
