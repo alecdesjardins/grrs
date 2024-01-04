@@ -1,4 +1,4 @@
-# grss, pronounced "grass", the Rusty grep
+# grss, the Rusty grep
 ## Description
 This is a simple parser for Rust files. It is written in Rust and uses the [clap](https://crates.io/crates/clap) crate for command line argument parsing.
 
