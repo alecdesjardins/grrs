@@ -1,15 +1,17 @@
 # grss, the Rusty grep
+
 ## Description
-This is a simple parser for Rust files. It is written in Rust and uses the [clap](https://crates.io/crates/clap) crate for command line argument parsing.
+grss is a simple parser for text files, written in Rust. It leverages the [clap](https://crates.io/crates/clap) crate for efficient command line argument parsing.
 
 ## Usage
-The parser can be used to parse a single file in various ways. The following command line arguments are available:
-```
+grss can be utilized to parse single files in various ways, providing flexibility in handling text files. The tool accepts the following command line arguments:
+```bash
 USAGE:
     grrs <PATTERN> <PATH>
 ```
 
 ## Examples
-```
+```bash
 # Search for a pattern in a file and print the lines that contain it
 $ grrs foo test.txt
+```
