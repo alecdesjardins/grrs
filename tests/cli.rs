@@ -7,7 +7,7 @@ use assert_fs::prelude::FileWriteStr; // Run programs
 fn file_doesnt_exist() -> Result<(), Box<dyn std::error::Error>> {
     let mut cmd = Command::cargo_bin("grrs")?;
 
-    cmd.arg("foobar").arg("test/file/doesnt/exist");
+    cmd.arg("-p foobar").arg("test/file/doesnt/exist");
     cmd.assert()
         .failure()
         .stderr(predicate::str::contains("could not read file"));
@@ -21,7 +21,7 @@ fn find_content_in_file() -> Result<(), Box<dyn std::error::Error>> {
     file.write_str("A test\nActual content\nMore content\nAnother test")?;
 
     let mut cmd = Command::cargo_bin("grrs")?;
-    cmd.arg("test").arg(file.path());
+    cmd.arg("-p test").arg(file.path());
     cmd.assert()
         .success()
         .stdout(predicate::str::contains("A test\nAnother test"));
